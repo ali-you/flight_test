@@ -1,7 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:golrang_task/core/network/http_adapter.dart';
 import 'package:golrang_task/core/network/rest_service.dart';
+import 'package:golrang_task/features/main/data/repositories/flight_details_repository.dart';
+import 'package:golrang_task/features/main/domain/repositories/flight_details_repository_interface.dart';
 import 'package:golrang_task/features/main/domain/repositories/flight_repository_interface.dart';
+import 'package:golrang_task/features/main/domain/usecases/flight_details_usecase.dart';
 import 'package:golrang_task/features/main/domain/usecases/flight_list_usecase.dart';
 
 import '../features/main/data/repositories/flight_repository.dart';
@@ -14,8 +17,12 @@ class DependencyInjection {
 
     getIt.registerSingleton<FlightRepositoryInterface>(
         FlightRepository(getIt<RestService>()));
+    getIt.registerSingleton<FlightDetailsRepositoryInterface>(
+        FlightDetailsRepository(getIt<RestService>()));
 
     getIt.registerFactory<FlightListUsecase>(
         () => FlightListUsecase(getIt<FlightRepositoryInterface>()));
+    getIt.registerFactory<FlightDetailsUsecase>(
+        () => FlightDetailsUsecase(getIt<FlightDetailsRepositoryInterface>()));
   }
 }

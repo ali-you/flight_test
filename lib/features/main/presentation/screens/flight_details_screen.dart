@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:golrang_task/features/main/data/models/flight_model.dart';
+import 'package:golrang_task/features/main/presentation/screens/rules_screen.dart';
 import 'package:golrang_task/features/main/presentation/widgets/flight_widget.dart';
 
 class FlightDetailsScreen extends StatefulWidget {
@@ -25,12 +26,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen>
     );
   }
 
-  Widget _rulesTab() {
-    return Column(
-      children: [],
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -51,6 +46,10 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen>
             child: TabBar(
               controller: _tabController,
               dividerColor: Colors.transparent,
+              indicatorSize: TabBarIndicatorSize.tab,
+              labelColor: const Color(0xff34B1FD),
+              indicatorPadding: const EdgeInsets.symmetric(horizontal: 16),
+              indicatorColor: const Color(0xff34B1FD),
               tabs: const [
                 Tab(
                   child: Text("اطلاعات پرواز"),
@@ -64,7 +63,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen>
           Expanded(
             child: TabBarView(
                 controller: _tabController,
-                children: [_flightDetailsTab(), _rulesTab()]),
+                children: [_flightDetailsTab(), const RulesScreen()]),
           ),
         ],
       ),

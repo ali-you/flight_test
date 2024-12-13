@@ -26,8 +26,29 @@ class FlightScreen extends StatefulWidget {
 class _FlightScreenState extends State<FlightScreen> {
   List<FlightModel> _flightList = [];
   List<FlightModel> _sortedList = [];
+  Map<DateTime, int>? _minPriceMap;
   bool _loading = true;
-  DateTime? _selectedDate;
+
+  Map<DateTime, int>? _calculateMin(List<FlightModel>? flights){
+    if (flights == null || flights.isEmpty) return null;
+
+    Map<DateTime, int> res = {};
+
+    for (var flight in flights) {
+      if (flight.startTime != null && flight.price != null) {
+        DateTime date = DateTime(
+          flight.startTime!.year,
+          flight.startTime!.month,
+          flight.startTime!.day,
+        );
+        if (!res.containsKey(date) || flight.price! < res[date]!) {
+          res[date] = flight.price!;
+        }
+      }
+    }
+
+    return res;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +65,10 @@ class _FlightScreenState extends State<FlightScreen> {
             _loading = false;
             _flightList = state.flightList;
             _sortedList = _flightList;
-            _selectedDate = null;
+            _minPriceMap = _calculateMin(_flightList);
           }
 
           if (state is ChangeDateState) {
-            print(state.datetime);
             _sortedList = _flightList.where((element) => element.startTime!.day == state.datetime.day).toList();
           }
 
@@ -71,6 +91,7 @@ class _FlightScreenState extends State<FlightScreen> {
           return Column(
             children: [
               DatePickerList(
+                minPrice: _minPriceMap,
                 onTap: (date) {
                   context.read<FlightScreenCubit>().changeDate(date);
                 }

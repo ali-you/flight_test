@@ -21,7 +21,6 @@ class HttpAdapter implements BaseAdapter {
     } on SocketException {
       return Response.socket();
     } catch (e) {
-      rethrow;
       return Response.error();
     }
   }

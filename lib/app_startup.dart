@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:golrang_task/core/router/app_router.dart';
-import '';
 
 class AppStartup extends StatelessWidget {
   const AppStartup({super.key});

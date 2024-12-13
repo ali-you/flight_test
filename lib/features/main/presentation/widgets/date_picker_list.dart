@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shamsi_date/shamsi_date.dart';
 
 class DatePickerList extends StatefulWidget {
-  const DatePickerList({super.key, this.onTap});
+  const DatePickerList({super.key, this.onTap, this.minPrice});
 
   final Function(DateTime date)? onTap;
+  final Map<DateTime, int>? minPrice;
 
   @override
   State<DatePickerList> createState() => _DatePickerListState();
@@ -29,6 +31,8 @@ class _DatePickerListState extends State<DatePickerList> {
                   scrollDirection: Axis.horizontal,
                   itemCount: _dates.length,
                   itemBuilder: (context, index) {
+                    Jalali jalali = Jalali.fromDateTime(_dates[index]);
+                    int? min = widget.minPrice?[_dates[index]];
                     return GestureDetector(
                       onTap: () {
                         _selectedDate.value = _dates[index];
@@ -50,7 +54,13 @@ class _DatePickerListState extends State<DatePickerList> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(DateFormat("MMM dd").format(_dates[index]), style: const TextStyle(fontSize: 12)),
+                            Text("${jalali.formatter.mN} ${jalali.formatter.d}", style: const TextStyle(fontSize: 12)),
+                            Text(
+                               min != null ? NumberFormat("###,###", "fa").format(min/1000) : "_",
+
+                             style: TextStyle(fontSize: 12, color: _selectedDate.value == _dates[index]
+                                 ? const Color(0xFF34b1fd)
+                                 : null)),
                           ],
                         ),
                       ),
